@@ -1,0 +1,23 @@
+{
+  "type": "Made",
+  "list": [
+    {
+      "customer name": "Arthur",
+      "status": "Made",
+      "size": "Grande",
+      "type": "Cappuccino"
+    },
+    {
+      "customer name": "Shaun",
+      "status": "Made",
+      "size": "Tall",
+      "type": "Latte"
+    },
+    {
+      "customer name": "Mandy",
+      "status": "Made",
+      "size": "Venti",
+      "type": "Americano"
+    }
+  ]
+}

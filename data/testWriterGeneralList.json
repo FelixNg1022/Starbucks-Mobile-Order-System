@@ -1,0 +1,26 @@
+{
+    "type": "Ordered",
+    "list": [
+        {
+            "size": "Grande",
+            "drink ID": 1,
+            "type": "Cappuccino",
+            "customer name": "Arthur",
+            "status": "Ordered"
+        },
+        {
+            "size": "Tall",
+            "drink ID": 2,
+            "type": "Latte",
+            "customer name": "Shaun",
+            "status": "Ordered"
+        },
+        {
+            "size": "Venti",
+            "drink ID": 3,
+            "type": "Americano",
+            "customer name": "Mandy",
+            "status": "Ordered"
+        }
+    ]
+}
