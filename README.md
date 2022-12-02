@@ -37,7 +37,7 @@ till system I'm really familiar with.
 
 ## User Stories:
 
-- As a user, I want to be able to let customers order a drink and add the drink to the drink list
+- As a user, I want to be able to let customers order a drink and add the drink to the drink list.
 - As a user, I want to be able to let customers cancel their drink orders given that the drink is not currently being made or made.
 - As a user, I want to be able to view all the drinks in a list at once.
 - As a user, I want to be able to check the number of drinks in each list.
