@@ -22,7 +22,7 @@ public class Order extends JPanel {
     private JTextField entryName4;
     private final JTable table;
 
-    private final String[] col = {"title", "notes"};
+    private final String[] col = {"Customer Name", "Size", "Type", "Drink ID"};
     DefaultTableModel tableModel;
 
     // constructor for ordered list
@@ -69,13 +69,13 @@ public class Order extends JPanel {
         entryName1.getDocument().addDocumentListener(addListener);
         entryName2 = new JTextField(10);
         entryName2.addActionListener(removeListener);
-        entryName2.getDocument().addDocumentListener(removeListener);
+        entryName2.getDocument().addDocumentListener(addListener);
         entryName3 = new JTextField(10);
         entryName3.addActionListener(addListener);
         entryName3.getDocument().addDocumentListener(addListener);
         entryName4 = new JTextField(10);
         entryName4.addActionListener(addListener);
-        entryName4.getDocument().addDocumentListener(addListener);
+        entryName4.getDocument().addDocumentListener(removeListener);
     }
 
     // EFFECTS: creates JPanel
@@ -83,12 +83,13 @@ public class Order extends JPanel {
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane,
                 BoxLayout.LINE_AXIS));
-        buttonPane.add(entryName2);
+        buttonPane.add(entryName4);
         buttonPane.add(removeButton);
         buttonPane.add(Box.createHorizontalStrut(5));
         buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
         buttonPane.add(Box.createHorizontalStrut(5));
         buttonPane.add(entryName1);
+        buttonPane.add(entryName2);
         buttonPane.add(entryName3);
         buttonPane.add(addButton);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -114,8 +115,8 @@ public class Order extends JPanel {
             ol.removeDrink(Integer.parseInt(drinkID));
 
             //Reset the text field.
-            entryName2.requestFocusInWindow();
-            entryName2.setText("");
+            entryName4.requestFocusInWindow();
+            entryName4.setText("");
         }
 
         //Required by DocumentListener.
@@ -166,13 +167,16 @@ public class Order extends JPanel {
             String size = entryName2.getText();
             String type = entryName3.getText();
 
-            ol.addDrink(new Drink(customerName, Drink.Size.valueOf(size), Drink.Type.valueOf(type)));
-            Object[] drink = {customerName, size, type};
+            Drink drink1 = new Drink(customerName, Drink.Size.valueOf(size), Drink.Type.valueOf(type));
+            ol.addDrink(drink1);
+            Object[] drink = {customerName, size, type, drink1.getDrinkID()};
             tableModel.addRow(drink);
 
             //Reset the text field.
             entryName1.requestFocusInWindow();
             entryName1.setText("");
+            entryName2.requestFocusInWindow();
+            entryName2.setText("");
             entryName3.requestFocusInWindow();
             entryName3.setText("");
         }

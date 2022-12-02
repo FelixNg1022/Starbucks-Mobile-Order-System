@@ -22,7 +22,7 @@ public class Making extends JPanel {
     private JTextField entryName4;
     private final JTable table;
 
-    private final String[] col = {"customer name", "size", "type", "drink ID"};
+    private final String[] col = {"Customer Name", "Size", "Type", "Drink ID"};
     DefaultTableModel tableModel;
 
     // constructor for ordered list
@@ -69,13 +69,13 @@ public class Making extends JPanel {
         entryName1.getDocument().addDocumentListener(addListener);
         entryName2 = new JTextField(10);
         entryName2.addActionListener(removeListener);
-        entryName2.getDocument().addDocumentListener(removeListener);
+        entryName2.getDocument().addDocumentListener(addListener);
         entryName3 = new JTextField(10);
         entryName3.addActionListener(addListener);
         entryName3.getDocument().addDocumentListener(addListener);
         entryName4 = new JTextField(10);
         entryName4.addActionListener(addListener);
-        entryName4.getDocument().addDocumentListener(addListener);
+        entryName4.getDocument().addDocumentListener(removeListener);
     }
 
     // EFFECTS: creates JPanel
@@ -114,8 +114,8 @@ public class Making extends JPanel {
             ml.removeDrink(Integer.parseInt(drinkID));
 
             //Reset the text field.
-            entryName2.requestFocusInWindow();
-            entryName2.setText("");
+            entryName4.requestFocusInWindow();
+            entryName4.setText("");
         }
 
         //Required by DocumentListener.
@@ -166,13 +166,16 @@ public class Making extends JPanel {
             String size = entryName2.getText();
             String type = entryName3.getText();
 
-            ml.addDrink(new Drink(customerName, Drink.Size.valueOf(size), Drink.Type.valueOf(type)));
-            Object[] entry = {customerName, size, type};
+            Drink drink = new Drink(customerName, Drink.Size.valueOf(size), Drink.Type.valueOf(type));
+            ml.addDrink(drink);
+            Object[] entry = {customerName, size, type, drink.getDrinkID()};
             tableModel.addRow(entry);
 
             //Reset the text field.
             entryName1.requestFocusInWindow();
             entryName1.setText("");
+            entryName2.requestFocusInWindow();
+            entryName2.setText("");
             entryName3.requestFocusInWindow();
             entryName3.setText("");
         }
@@ -214,7 +217,7 @@ public class Making extends JPanel {
     // EFFECTS: creates and displays the list
     public static void createAndShowGUI(DrinkList list) {
         //Create and set up the window.
-        JFrame frame = new JFrame("Ordered List");
+        JFrame frame = new JFrame("Making List");
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         //Create and set up the content pane.

@@ -1,5 +1,7 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.lists.DrinkList;
 import model.lists.MadeList;
 import model.lists.MakingList;
@@ -10,8 +12,6 @@ import persistence.JsonWriter;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,9 +55,7 @@ public class GraphicalApp {
 
         final JButton button5 = makeLoadButton();
 
-        JPanel panel = createPanel(title, picLabel, button1, button2, button3, button4, button5);
-
-        return panel;
+        return createPanel(title, picLabel, button1, button2, button3, button4, button5);
     }
 
     // MODIFIES: this
@@ -65,11 +63,7 @@ public class GraphicalApp {
     private static JButton makeOrderedButton() {
         //Create the "Finished" button.
         final JButton button1 = new JButton("Ordered");
-        button1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Order.createAndShowGUI(orderList);
-            }
-        });
+        button1.addActionListener(e -> Order.createAndShowGUI(orderList));
         return button1;
     }
 
@@ -77,11 +71,7 @@ public class GraphicalApp {
     // EFFECTS: makes the making list button and open its window
     private static JButton makeMakingButton() {
         final JButton button2 = new JButton("Making");
-        button2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Making.createAndShowGUI(makingList);
-            }
-        });
+        button2.addActionListener(e -> Making.createAndShowGUI(makingList));
         return button2;
     }
 
@@ -89,11 +79,7 @@ public class GraphicalApp {
     // EFFECTS: makes the made list button and open its window
     private static JButton makeMadeButton() {
         final JButton button3 = new JButton("Made");
-        button3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Made.createAndShowGUI(madeList);
-            }
-        });
+        button3.addActionListener(e -> Made.createAndShowGUI(madeList));
         return button3;
     }
 
@@ -102,21 +88,19 @@ public class GraphicalApp {
     private static JButton makeSaveButton() {
         //Create the "Save" button.
         final JButton button4 = new JButton("Save");
-        button4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    jsonWriter1.open();
-                    jsonWriter1.write(orderList);
-                    jsonWriter1.close();
-                    jsonWriter2.open();
-                    jsonWriter2.write(makingList);
-                    jsonWriter2.close();
-                    jsonWriter3.open();
-                    jsonWriter3.write(madeList);
-                    jsonWriter3.close();
-                } catch (FileNotFoundException ex) {
-                    ex.printStackTrace();
-                }
+        button4.addActionListener(e -> {
+            try {
+                jsonWriter1.open();
+                jsonWriter1.write(orderList);
+                jsonWriter1.close();
+                jsonWriter2.open();
+                jsonWriter2.write(makingList);
+                jsonWriter2.close();
+                jsonWriter3.open();
+                jsonWriter3.write(madeList);
+                jsonWriter3.close();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
             }
         });
         return button4;
@@ -127,15 +111,13 @@ public class GraphicalApp {
     private static JButton makeLoadButton() {
         //Create the "Load" button.
         final JButton button5 = new JButton("Load");
-        button5.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    orderList = jsonReader1.read();
-                    makingList = jsonReader2.read();
-                    madeList = jsonReader3.read();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+        button5.addActionListener(e -> {
+            try {
+                orderList = jsonReader1.read();
+                makingList = jsonReader2.read();
+                madeList = jsonReader3.read();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         });
         return button5;
@@ -184,11 +166,24 @@ public class GraphicalApp {
         jsonReader3 = new JsonReader(JSON_STORE3);
     }
 
+    // EFFECTS: prints the event log to console
+    public static void printLog(EventLog eventLog) {
+        for (Event next: eventLog) {
+            System.out.println(next.toString());
+        }
+    }
+
     // MODIFIES: this
     // EFFECTS: Set up and display the window.
     public static void createAndShowGUI() throws IOException {
         frame = new JFrame("Starbucks Mobile APP");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                printLog(EventLog.getInstance());
+                System.exit(0);
+            }
+        });
 
         JComponent newContentPane = createUI();
         newContentPane.setOpaque(true); //content panes must be opaque

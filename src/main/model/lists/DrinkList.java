@@ -1,6 +1,8 @@
 package model.lists;
 
 import model.Drink;
+import model.Event;
+import model.EventLog;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -27,6 +29,7 @@ public class DrinkList implements Writable {
             }
         }
         list.add(drink);
+        EventLog.getInstance().logEvent(new Event("Added " + drink.toString() + " to " + type));
         return true;
     }
 
@@ -36,6 +39,7 @@ public class DrinkList implements Writable {
         for (Drink d: list) {
             if (id == d.getDrinkID()) {
                 list.remove(d);
+                EventLog.getInstance().logEvent(new Event("Removed " + getDrink(id).toString() + " from " + type));
                 return true;
             }
         }
@@ -74,7 +78,7 @@ public class DrinkList implements Writable {
     }
 
     // REQUIRES: Drink with given drink ID to exist in the list
-    // EFFECTS: returns true if the drink exists in the list and we change the status of the drink, false otherwise
+    // EFFECTS: returns true if the drink exists in the list, and we change the status of the drink, false otherwise
     public boolean changeDrinkStatus(int id) {
         for (Drink d: list) {
             if (id == d.getDrinkID()) {
